@@ -1,0 +1,2 @@
+pryct_trips_dev
+888642464165.dkr.ecr.us-east-1.amazonaws.com/pryct_trips_dev

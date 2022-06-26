@@ -8,3 +8,6 @@ CREATE TABLE stage.st_trips(
     st_datasource       VARCHAR(300),
     prttn_dt            TIMESTAMP
 )
+
+-- GRANT INSERT, SELECT, UPDATE, DELETE ON stage.st_trips TO aws_dev_red;
+-- GRANT USAGE ON SCHEMA stage to aws_dev_red;

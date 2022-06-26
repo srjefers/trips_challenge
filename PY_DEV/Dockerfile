@@ -5,7 +5,7 @@ FROM python:3.9.2
 WORKDIR /WORKDIR
 
 # copy dependencies file to the working directory
-COPY requirements.txt
+COPY requirements.txt .
 
 # install dependencies
 RUN pip install awscli
