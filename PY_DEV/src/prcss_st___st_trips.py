@@ -1,6 +1,6 @@
 import sys 
 from datetime import datetime
-from methods.prcss_orchestator import prcss_insrt_athn, prcss_trnc_athena
+from methods.prcss_orchestator import prcss_insrt_athn, prcss_trnc_athena, prcss_insrt_rdshft
 
 def main(prttn_dt):
     '''
@@ -26,10 +26,9 @@ def main(prttn_dt):
         print('>> Athena STTS: {0}'.format(athena_insrt_stts))
 
         print('>> Insert Redshift')
-        #redshift_insrt_stts = 
+        redshift_insrt_stts = prcss_insrt_rdshft(str(prttn_dt), prfx_bckt, tbl_schm, tbl_nm, prttn_fld)
+        print('>> Redshift STTS: {0}'.format(redshift_insrt_stts))
 
-
-    
     except BaseException as error:
         print('An exception ocurred: {0}'.format(str(error)))
     finally:

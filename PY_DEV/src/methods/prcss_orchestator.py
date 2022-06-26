@@ -1,6 +1,7 @@
 import sys
 from datetime import datetime
 from .aws_athena_conf import athena_insert, athena_trunc, athena_select_qry
+from .aws_redshift_conf import redshift_cnn
 
 s3_output_location = 's3://bckt-dev/dev_log/athena/'
 bucket_raw = 'raw-bckt-st'
@@ -56,3 +57,46 @@ def prcss_trnc_athena(prttn_dt, prfx_bckt, tbl_typ):
         print('An exception ocurred: {0}'.format(error))
         return False
 
+def prcss_insrt_rdshft(prttn_dt, prfx_bckt, tbl_schm, tbl_rdshft, prttn_fld):
+    try:
+        bucket_nm = prcss_bucket_definition(tbl_schm)
+
+        conR = redshift_cnn()
+        curR = conR.cursor()
+
+        cp_rdshft = '''
+                        COPY st_aux.{0}_aux
+                        FROM 's3://{1}/{2}/' 
+                        iam_role 'arn:aws:iam::888642464165:role/s3Redshift_readOnly' 
+                        FORMAT AS PARQUET;
+                    '''.format(tbl_rdshft, bucket_nm, prfx_bckt)
+
+        cp_rdshft = cp_rdshft.replace('{prttn_dt}', prttn_dt)
+        dlt_aux = 'DELETE FROM st_aux.{0}_aux'.format(tbl_rdshft)
+        #print(cp_rdshft)
+        #print(dlt_aux)
+        curR.execute(dlt_aux)
+        #print('dlt_aux done')
+        curR.execute(cp_rdshft)
+
+        dlt_tbl_prttn_dt = "DELETE FROM {0}.{1} WHERE prttn_dt = TO_TIMESTAMP('{2}', 'yyyyMMdd'); commit;".format(tbl_schm, tbl_rdshft, prttn_dt)
+        #print(dlt_tbl_prttn_dt)
+        curR.execute(dlt_tbl_prttn_dt)
+
+        insrt_qry = """
+                        INSERT INTO {0}.{1}
+                        SELECT *, TO_TIMESTAMP('{2}', 'yyyyMMdd')
+                        FROM st_aux.{1}_aux;
+                        COMMIT;
+                    """.format(tbl_schm, tbl_rdshft, prttn_dt)
+
+        #print(insrt_qry)
+        curR.execute(insrt_qry)
+        conR.commit()
+        return 'Redshift Succesfully completed'
+    except BaseException as error:
+        print('An exception ocurred in redshift insert: {0}'.format(str(error)))
+    finally:
+        curR.close()
+        conR.close()
+    

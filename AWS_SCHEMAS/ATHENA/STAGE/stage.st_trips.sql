@@ -9,7 +9,7 @@ CREATE EXTERNAL TABLE stage.st_trips(
 )
 PARTITIONED BY (prttn_dt BIGINT)
 STORED AS PARQUET
-LOCATION 's3://anltcs-bckt-st/stage/st_trips'
+LOCATION 's3://anltcs-bckt-st/stage/st_trips/'
 TBLPROPERTIES ("parquet.compression"="SNAPPY");
 
 -- SELECT COUNT(1) FROM stage.st_trips;
