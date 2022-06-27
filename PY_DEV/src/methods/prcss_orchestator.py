@@ -27,7 +27,7 @@ def prcss_insrt_athn(prttn_dt, prfx_bckt, qry_file, tbl_typ):
         @type qry_file      str
         @type trnct_prtn    str
         @type tbl_typ       str
-
+        Insert values in Athena, executing sql Script.
     '''
     try:
         bucket_nm = prcss_bucket_definition(tbl_typ)
@@ -58,6 +58,15 @@ def prcss_trnc_athena(prttn_dt, prfx_bckt, tbl_typ):
         return False
 
 def prcss_insrt_rdshft(prttn_dt, prfx_bckt, tbl_schm, tbl_rdshft, prttn_fld):
+    '''
+        prcss_insrt_rdshft  String
+        @type prttn_dt      str
+        @type prfx_bckt     str
+        @type tbl_schm      str
+        @type tbl_rdshft    str
+        @type prttn_fld     str
+        Insert the full process on redshift, from COPY to the analytics schema. 
+    '''
     try:
         bucket_nm = prcss_bucket_definition(tbl_schm)
 

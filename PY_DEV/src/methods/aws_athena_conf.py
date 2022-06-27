@@ -66,6 +66,7 @@ def athena_select_qry(sql_qry: str, prnt_qry: bool):
         ATHENA SELECT QRY
         @type sql_qry   str
         @type prnt_qry  bool
+        Executes select query.
     '''
     if prnt_qry:
         print(sql_qry)

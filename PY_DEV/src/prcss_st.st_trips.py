@@ -4,6 +4,7 @@ from methods.prcss_orchestator import prcss_insrt_athn, prcss_trnc_athena, prcss
 
 def main(prttn_dt):
     '''
+        Main Process
     '''
     try:
         folder_nm = 'stage/st_trips/'
