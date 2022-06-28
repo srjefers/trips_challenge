@@ -49,16 +49,39 @@ The solution should be scalable to 100 million entries. It is encouraged to simp
 ### Query 1
 Develop a way to obtain the weekly average number of trips for an area, defined by a bounding box (given by coordinates) or by a region.
 ```sql
-SELECT 
-	DATE_TRUNC('week', st_datetime) week, st_region, COUNT(1) trips 
-FROM stage.st_trips
-GROUP BY DATE_TRUNC('week', st_datetime), st_region;
+SELECT week, AVG(trips)
+FROM (
+	SELECT 
+		DATE_TRUNC('week', st_datetime) week, st_region, COUNT(1) trips 
+	FROM stage.st_trips
+	GROUP BY DATE_TRUNC('week', st_datetime), st_region
+)
+GROUP BY week;
 ```
 
 ### Query 2
 From the two most commonly appearing regions, which is the latest datasource?
 ```sql
-
+SELECT 
+	st_region, st_datasource
+FROM (
+	SELECT 
+		st_region, st_datasource, st_datetime,
+		ROW_NUMBER() OVER (PARTITION BY st_region ORDER BY st_datetime DESC) rn
+	FROM stage.st_trips
+	WHERE st_region IN (
+		SELECT st_region 
+		FROM (
+			SELECT 
+				st_region, COUNT(1)
+			FROM stage.st_trips
+			GROUP BY st_region
+			ORDER BY COUNT(1) DESC
+			LIMIT 2
+		)
+	)
+	ORDER BY st_datetime DESC) tbl_tmp
+WHERE rn = 1;  
 ```
 
 ### Query 3
