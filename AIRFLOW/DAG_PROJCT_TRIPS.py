@@ -60,13 +60,13 @@ ecs_operator_args_template = {
 
 ecs_operator_args = copy.deepcopy(ecs_operator_args_template)
 
-PROCESS_ST_TRIPS = ECSOperator(
+PROCESS_ST_TRIPS_ATHENA = ECSOperator(
     task_id = 'PROCESS_ST_TRIPS',
     overrides = {
         'containerOverrides' : [
             {
                 'name': awsContainerName,
-                'command':["python","prcss_st.st_trips.py","{{ execution_date.in_timezone('America/Guatemala').strftime('%Y%m%d') }} "]
+                'command':["python","prcss_st.st_trips.py","1","{{ execution_date.in_timezone('America/Guatemala').strftime('%Y%m%d') }} "]
             },
         ],
     },
@@ -74,4 +74,18 @@ PROCESS_ST_TRIPS = ECSOperator(
     **ecs_operator_args
 )
 
-PROCESS_ST_TRIPS
+PROCESS_ST_TRIPS_REDSHIFT = ECSOperator(
+    task_id = 'PROCESS_ST_TRIPS_REDSHIFT',
+    overrides = {
+        'containerOverrides' : [
+            {
+                'name': awsContainerName,
+                'command':["python","prcss_st.st_trips.py","2","{{ execution_date.in_timezone('America/Guatemala').strftime('%Y%m%d') }} "]
+            },
+        ],
+    },
+    dag = dag,
+    **ecs_operator_args
+)
+
+PROCESS_ST_TRIPS_ATHENA>>PROCESS_ST_TRIPS_REDSHIFT

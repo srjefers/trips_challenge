@@ -19,7 +19,7 @@ def prcss_bucket_definition(tbl_schm: str) -> str:
     elif tbl_schm.upper() == 'STAGE':
         return bucket_stg
 
-def prcss_insrt_athn(prttn_dt, prfx_bckt, qry_file, tbl_typ):
+def prcss_insrt_athn(prttn_dt: str, prfx_bckt: str, qry_file: str, tbl_typ: str) -> str:
     '''
         prcss_insrt_athn    String
         @type prttn_dt      str
@@ -39,9 +39,9 @@ def prcss_insrt_athn(prttn_dt, prfx_bckt, qry_file, tbl_typ):
         print('An exception ocurred: {0}'.format(error))
         return False
 
-def prcss_trnc_athena(prttn_dt, prfx_bckt, tbl_typ):
+def prcss_trnc_athena(prttn_dt: str, prfx_bckt: str, tbl_typ: str) -> bool: 
     '''
-        prcss_trnc_athena   String
+        prcss_trnc_athena   Bool
         @type prttn_dt  str
         @type prfx_bckt str
         @type tbl_typ   str
@@ -57,7 +57,7 @@ def prcss_trnc_athena(prttn_dt, prfx_bckt, tbl_typ):
         print('An exception ocurred: {0}'.format(error))
         return False
 
-def prcss_insrt_rdshft(prttn_dt, prfx_bckt, tbl_schm, tbl_rdshft, prttn_fld):
+def prcss_insrt_rdshft(prttn_dt: str, prfx_bckt: str, tbl_schm: str, tbl_rdshft: str, prttn_fld: str) -> str:
     '''
         prcss_insrt_rdshft  String
         @type prttn_dt      str
