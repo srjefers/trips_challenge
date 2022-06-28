@@ -2,8 +2,10 @@
 
 CREATE EXTERNAL TABLE stage.st_trips(
     st_region           STRING,
-    origin_coord        STRING,
-    destination_coord   STRING,
+    origin_coord_east   DOUBLE,
+    origin_coord_nort   DOUBLE,
+    destination_coord_east  DOUBLE,
+    destination_coord_nort  DOUBLE,
     st_datetime         TIMESTAMP,
     st_datasource       STRING
 )

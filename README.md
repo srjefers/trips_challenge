@@ -41,6 +41,7 @@ You can build this proyect in AWS, you will need those services:
     ├─ PY_DEV/src/      Python proyect (see PY_DEV/README.md)
     |   ├─ methods/     Objects and Classes for connection and data manipulation
     |   └─ sqlScripts/  SQL Scripts
+    ├─ SOLUTIONS        Contains a README file with the solutions of the questions of the challenge, including sql querys.
     └─ NIFI/            Nifi XML Flow
 
 
